@@ -101,7 +101,7 @@ func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, s)
 }
 
-// Refresh updates the file Input & Output stored in the struct
+// Refresh updates the file Input Markdown & Output HTML stored in the struct
 func (s *MarkdownServer) Refresh() {
 	markdown, err := ioutil.ReadFile(s.Filename)
 	if err != nil {

@@ -13,10 +13,11 @@ import (
 )
 
 var helpText = `
-	Markdown server:
-
-	--help		Show this help
+Usage: md FILE.md
+       md README.md --port 3000
+			 
 	--port		Port to serve from
+	--help		Show this help screen
 `
 
 var html = `
@@ -55,6 +56,7 @@ type MarkdownServer struct {
 	Output   template.HTML
 }
 
+// entry point & validation
 func main() {
 	s := MarkdownServer{}
 	help := flag.Bool("help", false, "show help")
@@ -64,32 +66,40 @@ func main() {
 
 	args := flag.Args()
 	if *help {
-		fmt.Println(helpText)
-		os.Exit(0)
+
 	}
 
 	if len(args) == 0 {
-		log.Fatal("Error: Please provide a filename")
+		usage("Please provide a file as an argument e.g. README.md")
 	}
 	if len(args) > 1 {
-		log.Fatal("Error: Please provide a single filename to serve")
+		usage("Provide limit to single files")
 	}
 	s.Filename = args[0]
 	s.Serve()
+}
+
+func usage(note string) {
+	if len(note) > 0 {
+		fmt.Println("Error: " + note)
+	}
+	fmt.Println(helpText)
+	os.Exit(0)
 }
 
 // Serve starts the http server
 func (s *MarkdownServer) Serve() {
 	h := http.NewServeMux()
 	h.HandleFunc("/", s.Render)
-	log.Printf("Serving (%s) at http://localhost:%s", s.Filename, s.Port)
+
+	log.Printf("Starting Markdown Server for '%s' at http://localhost:%s", s.Filename, s.Port)
 	err := http.ListenAndServe(":"+s.Port, h)
 	log.Fatal(err)
 }
 
 // Render handles the request by converting markdown & rendering html
 func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Server: refreshing")
+	log.Printf("GET /")
 	s.Refresh()
 
 	output := blackfriday.MarkdownCommon([]byte(s.Input))
@@ -97,7 +107,6 @@ func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, _ := template.New("test").Parse(html)
 	tmpl.Execute(w, s)
-	//fmt.Fprintf(w, s.output)
 }
 
 // Refresh updates the file stored in the struct

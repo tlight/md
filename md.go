@@ -42,7 +42,7 @@ var html = `
 	</head>
 	<body>
 		<article class="markdown-body">
-			{{.Output}}
+			{{.HTML}}
 		</article>
 	</body>
 </html>
@@ -52,15 +52,14 @@ var html = `
 type MarkdownServer struct {
 	Port     string
 	Filename string
-	Input    string
-	Output   template.HTML
+	Markdown string
+	HTML     template.HTML
 }
 
 // entry point & validation
 func main() {
 	s := MarkdownServer{}
 	help := flag.Bool("help", false, "show help")
-
 	flag.StringVar(&s.Port, "port", "8080", "Server port")
 	flag.Parse()
 
@@ -68,7 +67,6 @@ func main() {
 	if *help {
 
 	}
-
 	if len(args) == 0 {
 		usage("Please provide a file as an argument e.g. README.md")
 	}
@@ -91,7 +89,6 @@ func usage(note string) {
 func (s *MarkdownServer) Serve() {
 	h := http.NewServeMux()
 	h.HandleFunc("/", s.Render)
-
 	log.Printf("Starting Markdown Server for '%s' at http://localhost:%s", s.Filename, s.Port)
 	err := http.ListenAndServe(":"+s.Port, h)
 	log.Fatal(err)
@@ -101,19 +98,18 @@ func (s *MarkdownServer) Serve() {
 func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
 	log.Printf("GET /")
 	s.Refresh()
-
-	output := blackfriday.MarkdownCommon([]byte(s.Input))
-	s.Output = template.HTML(output)
-
 	tmpl, _ := template.New("test").Parse(html)
 	tmpl.Execute(w, s)
 }
 
-// Refresh updates the file stored in the struct
+// Refresh updates the file Input & Output stored in the struct
 func (s *MarkdownServer) Refresh() {
-	input, err := ioutil.ReadFile(s.Filename)
+	markdown, err := ioutil.ReadFile(s.Filename)
 	if err != nil {
 		log.Fatal(err)
 	}
-	s.Input = string(input)
+	s.Markdown = string(markdown)
+
+	html := blackfriday.MarkdownCommon([]byte(s.Markdown))
+	s.HTML = template.HTML(html)
 }

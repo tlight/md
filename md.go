@@ -65,12 +65,10 @@ func main() {
 
 	args := flag.Args()
 	if *help {
-
-	}
-	if len(args) == 0 {
+		usage("")
+	} else if len(args) == 0 {
 		usage("Please provide a file as an argument e.g. README.md")
-	}
-	if len(args) > 1 {
+	} else if len(args) > 1 {
 		usage("Provide limit to single files")
 	}
 	s.Filename = args[0]

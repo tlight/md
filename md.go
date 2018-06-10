@@ -58,12 +58,11 @@ type MarkdownServer struct {
 
 // entry point & validation
 func main() {
-	s := MarkdownServer{}
 	help := flag.Bool("help", false, "show help")
-	flag.StringVar(&s.Port, "port", "8080", "Server port")
+	port := flag.String("port", "8080", "Server port")
 	flag.Parse()
-
 	args := flag.Args()
+
 	if *help {
 		usage("")
 	} else if len(args) == 0 {
@@ -71,7 +70,9 @@ func main() {
 	} else if len(args) > 1 {
 		usage("Provide limit to single files")
 	}
-	s.Filename = args[0]
+	filename := args[0]
+
+	s := MarkdownServer{*port, filename, "", ""}
 	s.Serve()
 }
 

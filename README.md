@@ -12,6 +12,7 @@ $ go get github.com/tlight/md
 
 ```sh
 > md README.md
+Starting Markdown Server for 'README.md' at http://localhost:8080
 ```
 
 # License

@@ -97,8 +97,11 @@ func (s *MarkdownServer) Serve() {
 func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
 	log.Printf("GET /")
 	s.Refresh()
-	tmpl, _ := template.New("test").Parse(html)
-	tmpl.Execute(w, s)
+	t, err := template.New("md").Parse(html)
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Execute(w, s)
 }
 
 // Refresh updates the file Input Markdown & Output HTML stored in the struct

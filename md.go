@@ -48,9 +48,8 @@ var html = `
 </html>
 `
 
-// MarkdownServer contains code & configuration
-type MarkdownServer struct {
-	Port     string
+// MarkdownHandler contains code & configuration
+type MarkdownHandler struct {
 	Filename string
 	Markdown string
 	HTML     template.HTML
@@ -72,8 +71,11 @@ func main() {
 	}
 	filename := args[0]
 
-	s := MarkdownServer{*port, filename, "", ""}
-	s.Serve()
+	// Serve MarkdownHandler
+	log.Printf("Starting Markdown Server for '%s' at http://localhost:%s", filename, *port)
+	http.Handle("/", &MarkdownHandler{filename, "", ""})
+	err := http.ListenAndServe(":"+*port, nil)
+	log.Fatal(err)
 }
 
 func usage(note string) {
@@ -84,17 +86,8 @@ func usage(note string) {
 	os.Exit(0)
 }
 
-// Serve starts the http server
-func (s *MarkdownServer) Serve() {
-	h := http.NewServeMux()
-	h.HandleFunc("/", s.Render)
-	log.Printf("Starting Markdown Server for '%s' at http://localhost:%s", s.Filename, s.Port)
-	err := http.ListenAndServe(":"+s.Port, h)
-	log.Fatal(err)
-}
-
-// Render handles the request by converting markdown & rendering html
-func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
+// ServeHTTP implements the Handler interface to respond to request by converting markdown & rendering html
+func (s *MarkdownHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Printf("GET /")
 	s.Refresh()
 	t, err := template.New("md").Parse(html)
@@ -105,7 +98,7 @@ func (s *MarkdownServer) Render(w http.ResponseWriter, r *http.Request) {
 }
 
 // Refresh updates the file Input Markdown & Output HTML stored in the struct
-func (s *MarkdownServer) Refresh() {
+func (s *MarkdownHandler) Refresh() {
 	markdown, err := ioutil.ReadFile(s.Filename)
 	if err != nil {
 		log.Fatal(err)

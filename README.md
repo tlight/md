@@ -1,6 +1,6 @@
 # md
 
- Simple markdown server
+Zero configuration minimal markdown server for local review
 
 ## Installation
 

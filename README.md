@@ -1,6 +1,6 @@
 # md
 
-Zero configuration minimal markdown server for local review
+Zero configuration minimal markdown server for local rendering.
 
 ## Installation
 
@@ -8,7 +8,7 @@ Zero configuration minimal markdown server for local review
 $ go get github.com/tlight/md
 ```
 
-## Example
+## Usage
 
 ```sh
 > md README.md

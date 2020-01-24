@@ -15,7 +15,7 @@ import (
 var helpText = `
 Usage: md FILE.md
        md --port 3000 README.md
-			 
+
 	--port		Port to serve from
 	--help		Show this help screen
 `
@@ -114,6 +114,6 @@ func (s *MarkdownHandler) Refresh() {
 		log.Fatal(err)
 	}
 	s.Markdown = string(markdown)
-	html := blackfriday.MarkdownCommon([]byte(s.Markdown))
+	html := blackfriday.Run([]byte(s.Markdown))
 	s.HTML = template.HTML(html)
 }

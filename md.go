@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/russross/blackfriday"
+	"github.com/russross/blackfriday/v2"
 )
 
 var helpText = `

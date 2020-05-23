@@ -70,7 +70,7 @@ func main() {
 	} else if len(args) == 0 {
 		usage("Please provide a file as an argument e.g. README.md")
 	} else if len(args) > 1 {
-		usage("Provide limit to single files")
+		usage("Please limit to a single file")
 	}
 	filename := args[0]
 

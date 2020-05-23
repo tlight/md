@@ -9,7 +9,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/russross/blackfriday/v2"
+	// "github.com/russross/blackfriday/v2"
+	"gopkg.in/russross/blackfriday.v2"
 )
 
 var helpText = `

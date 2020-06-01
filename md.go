@@ -12,8 +12,8 @@ var helpText = `
 Usage: md FILE.md
        md --port 3000 README.md
 
-	--port		Port to serve from
-	--help		Show this help screen
+	--port          Port to serve from
+	--help	        Show this help screen
 `
 
 // entry point & validation

@@ -7,6 +7,7 @@ Zero configuration minimal markdown server for local rendering.
 ## Features
 
 * Fast start with zero or minimal CLI config
+* Live reload
 * Airplane mode (no external assets)
 
 ## Installation

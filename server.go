@@ -45,7 +45,8 @@ func (s *MarkdownHandler) Refresh() {
 		log.Fatal(err)
 	}
 	s.Markdown = string(markdown)
-	s.Markdown = strings.ReplaceAll(s.Markdown, "\r\n", "\n")
+	s.Markdown = strings.ReplaceAll(s.Markdown, "\r\n", "\n") // Windows
+	s.Markdown = strings.ReplaceAll(s.Markdown, "\r", "\n")   // Mac
 
 	var html bytes.Buffer
 	if err := goldmark.Convert([]byte(s.Markdown), &html); err != nil {

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/yuin/goldmark"
 )
@@ -44,6 +45,8 @@ func (s *MarkdownHandler) Refresh() {
 		log.Fatal(err)
 	}
 	s.Markdown = string(markdown)
+	s.Markdown = strings.ReplaceAll(s.Markdown, "\r\n", "\n")
+
 	var html bytes.Buffer
 	if err := goldmark.Convert([]byte(s.Markdown), &html); err != nil {
 		log.Println("ERROR: Unable to parse Markdown")

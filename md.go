@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"html/template"
@@ -9,8 +10,7 @@ import (
 	"net/http"
 	"os"
 
-	// "github.com/russross/blackfriday/v2"
-	"gopkg.in/russross/blackfriday.v2"
+	"github.com/yuin/goldmark"
 )
 
 var helpText = `
@@ -115,6 +115,10 @@ func (s *MarkdownHandler) Refresh() {
 		log.Fatal(err)
 	}
 	s.Markdown = string(markdown)
-	html := blackfriday.Run([]byte(s.Markdown))
-	s.HTML = template.HTML(html)
+	//html := blackfriday.Run([]byte(s.Markdown))
+	var html bytes.Buffer
+	if err := goldmark.Convert([]byte(s.Markdown), &html); err != nil {
+		log.Println("ERROR: Unable to parse Markdown")
+	}
+	s.HTML = template.HTML(html.String())
 }

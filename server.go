@@ -22,18 +22,20 @@ type MarkdownHandler struct {
 	ModTime  time.Time
 	Interval int
 	Template *template.Template
+	Verbose  bool
 }
 
 // NewMarkdownHandler returns obj
-func NewMarkdownHandler(filename string) *MarkdownHandler {
+func NewMarkdownHandler(filename string, interval int, verbose bool) *MarkdownHandler {
 	t, err := template.New("md").Parse(string(Client))
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &MarkdownHandler{
 		Filename: filename,
-		Interval: 1000,
+		Interval: interval,
 		Template: t,
+		Verbose:  verbose,
 	}
 }
 
@@ -69,7 +71,9 @@ func (s *MarkdownHandler) IsModified() bool {
 
 // Refresh updates the input Markdown and converts to output HTML stored in the struct
 func (s *MarkdownHandler) Refresh() {
-	log.Printf("Refresh Markdown!")
+	if s.Verbose {
+		log.Printf("Refresh Markdown!")
+	}
 	markdown, err := ioutil.ReadFile(s.Filename)
 	if err != nil {
 		log.Fatal(err)

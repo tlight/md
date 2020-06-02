@@ -17,7 +17,7 @@ via go get:
 $ go get github.com/tlight/md
 ```
 
-via gobinaries (if you don't have Go installed):
+via [gobinaries.com](https://gobinaries.com) (if you don't have Go installed):
 ```
 curl -sf https://gobinaries.com/tlight/md | sh
 ```
@@ -25,13 +25,24 @@ curl -sf https://gobinaries.com/tlight/md | sh
 ## Usage
 
 ```sh
+Usage: md FILE.md
+       md -p 3000 -n 5 FILE.md
+
+    -p, --port           Port to serve from (default 8080)
+    -n, --interval       Set update interval in seconds (default 1)
+    -h, --help           Output usage information
+    -v, --verbose        Enable verbose log output
+        --version        Show application version
+```
+
+## Examples
+```sh
 $ md README.md
 Starting Markdown Server for 'README.md' at http://localhost:8080
 
-$ md README.md --port 3000
+$ md -p 3000 -n 5 README.md
 Starting Markdown Server for 'README.md' at http://localhost:3000
 ```
-
 # License
 
  MIT

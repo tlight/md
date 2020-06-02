@@ -46,6 +46,9 @@ Starting Markdown Server for 'README.md' at http://localhost:3000
 2020/06/02 12:19:10 Refresh Markdown!
 2020/06/02 12:19:15 GET /md
 ```
+
+![](https://raw.githubusercontent.com/tlight/md/master/md.gif)
+
 # License
 
  MIT

@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-const VERSION = "v1.1.0"
+const VERSION = "v1.2.0"
 
 var helpText = `
 Usage: md FILE.md

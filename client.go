@@ -36,7 +36,7 @@ function updateMarkdown() {
   });
 }
 
-window.setInterval(updateMarkdown, {{.Interval}});
+window.setInterval(updateMarkdown, ({{.Interval}} * 1000)); // ms
 
     </script>
     <style>

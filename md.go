@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-const VERSION = "v1.2.0"
+const VERSION = "v1.2.1"
 
 var helpText = `
 Usage: md FILE.md
@@ -52,7 +52,7 @@ func main() {
 
 		// Serve MarkdownHandler
 		log.Printf("Starting Markdown Server for '%s' at http://localhost:%d", filename, port)
-		http.Handle("/", NewMarkdownHandler(filename, port, verbose))
+		http.Handle("/", NewMarkdownHandler(filename, interval, verbose))
 		err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 		log.Fatal(err)
 	}

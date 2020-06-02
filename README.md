@@ -2,7 +2,7 @@
 
 ## About
 
-Zero configuration minimal markdown server for local rendering.
+Minimal configuration markdown server for local rendering.
 
 ## Features
 

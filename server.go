@@ -41,8 +41,9 @@ func NewMarkdownHandler(filename string, interval int, verbose bool) *MarkdownHa
 
 // ServeHTTP implements the Handler interface to respond to request by converting markdown & rendering html
 func (s *MarkdownHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.Log("GET /")
-	if strings.Compare(r.URL.Path[1:], "md") == 0 {
+	path := r.URL.Path[1:]
+	s.Log("GET /" + path)
+	if strings.Compare(path, "md") == 0 {
 		if s.IsModified() {
 			s.Refresh()
 		}

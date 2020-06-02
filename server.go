@@ -41,7 +41,7 @@ func NewMarkdownHandler(filename string, interval int, verbose bool) *MarkdownHa
 
 // ServeHTTP implements the Handler interface to respond to request by converting markdown & rendering html
 func (s *MarkdownHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// log.Printf("GET /")
+	s.Log("GET /")
 	if strings.Compare(r.URL.Path[1:], "md") == 0 {
 		if s.IsModified() {
 			s.Refresh()
@@ -71,9 +71,7 @@ func (s *MarkdownHandler) IsModified() bool {
 
 // Refresh updates the input Markdown and converts to output HTML stored in the struct
 func (s *MarkdownHandler) Refresh() {
-	if s.Verbose {
-		log.Printf("Refresh Markdown!")
-	}
+	s.Log("Refresh Markdown!")
 	markdown, err := ioutil.ReadFile(s.Filename)
 	if err != nil {
 		log.Fatal(err)
@@ -84,7 +82,13 @@ func (s *MarkdownHandler) Refresh() {
 
 	var html bytes.Buffer
 	if err := goldmark.Convert([]byte(s.Markdown), &html); err != nil {
-		log.Println("ERROR: Unable to parse Markdown")
+		s.Log("ERROR: Unable to parse Markdown")
 	}
 	s.HTML = template.HTML(html.String())
+}
+
+func (s *MarkdownHandler) Log(message string) {
+	if s.Verbose {
+		log.Print(message)
+	}
 }

@@ -40,8 +40,11 @@ Usage: md FILE.md
 $ md README.md
 Starting Markdown Server for 'README.md' at http://localhost:8080
 
-$ md -p 3000 -n 5 README.md
+$ md -p 3000 -n 5 -v README.md
 Starting Markdown Server for 'README.md' at http://localhost:3000
+2020/06/02 12:19:10 GET /
+2020/06/02 12:19:10 Refresh Markdown!
+2020/06/02 12:19:15 GET /md
 ```
 # License
 
